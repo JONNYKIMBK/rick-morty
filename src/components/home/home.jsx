@@ -3,6 +3,7 @@ import { useQuery, gql } from "@apollo/client";
 import Searchbar from "../searchbar/searchbar";
 import Cards from "../cards/cards";
 import ResetButton from "../resetButton/resetButton";
+import Filters from "../filters/filters";
 import "./home.css";
 
 const GET_CHARACTERS = gql`
@@ -35,10 +36,15 @@ const GET_CHARACTERS = gql`
 `;
 function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterOptions, setFilterOptions] = useState({
+    status: "",
+    species: "",
+    gender: "",
+  });
 
   const { loading, error, data } = useQuery(GET_CHARACTERS, {
     variables: {
-      filter: { name: searchQuery },
+      filter: { name: searchQuery, ...filterOptions },
     },
   });
 
@@ -47,18 +53,20 @@ function Home() {
     setSearchQuery(query);
   };
 
-  const handleReset = () => {
-    setSearchQuery("");
+  const handleFilterChange = (newFilters) => {
+    setFilterOptions(newFilters);
   };
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) {
-    console.error("Error:", error);
+  const handleReset = () => {
+    setSearchQuery("");
+    setFilterOptions({
+      status: "",
+      species: "",
+      gender: "",
+    });
+  };
 
-    return <p>Error: {error.message}</p>;
-  }
-
-  const characters = data.characters.results;
+  const characters = data && data.characters ? data.characters.results : [];
 
   return (
     <div>
@@ -68,9 +76,29 @@ function Home() {
           <span>Search results for {`"${searchQuery}"`}</span>
         ) : null}
       </div>
-      <ResetButton onReset={handleReset} />
+      <div className="buttons">
+        <Filters
+          onFilterChange={handleFilterChange}
+          filterOptions={filterOptions}
+        />
+        <ResetButton onReset={handleReset} />
+      </div>
 
-      <Cards characters={characters} />
+      {loading && <p>Cargando...</p>}
+
+      {!loading && error && <p>Error: {error.message}</p>}
+
+      {!loading && !error && data && (
+        <div>
+          <Cards characters={data.characters.results} />
+        </div>
+      )}
+
+      {!loading && !error && data.characters.results.length == 0 && (
+        <div>
+          <span>No results</span>
+        </div>
+      )}
     </div>
   );
 }
