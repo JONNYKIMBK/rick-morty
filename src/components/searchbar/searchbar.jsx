@@ -4,12 +4,15 @@ import "./searchbar.css";
 function Searchbar({ onSearch }) {
   const [query, setQuery] = useState("");
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
+
     onSearch(query);
+    setQuery("");
   };
 
   return (
-    <div className="searchbar-container">
+    <form className="searchbar-container" onSubmit={handleSearch}>
       <input
         type="text"
         value={query}
@@ -17,10 +20,10 @@ function Searchbar({ onSearch }) {
         className="search-input"
         placeholder="Search..."
       />
-      <button onClick={handleSearch} className="search-button">
+      <button type="submit" className="search-button">
         Search
       </button>
-    </div>
+    </form>
   );
 }
 
