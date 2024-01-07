@@ -4,14 +4,17 @@ import Searchbar from "../searchbar/searchbar";
 import Cards from "../cards/cards";
 import ResetButton from "../resetButton/resetButton";
 import Filters from "../filters/filters";
+import Pagination from "../pagination/pagination";
 import "./home.css";
 
 const GET_CHARACTERS = gql`
-  query Characters($filter: FilterCharacter) {
-    characters(filter: $filter) {
+  query Characters($filter: FilterCharacter, $page: Int) {
+    characters(filter: $filter, page: $page) {
       info {
         count
         pages
+        next
+        prev
       }
       results {
         id
@@ -42,19 +45,23 @@ function Home() {
     gender: "",
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { loading, error, data } = useQuery(GET_CHARACTERS, {
     variables: {
       filter: { name: searchQuery, ...filterOptions },
+      page: currentPage,
     },
   });
 
   const handleSearch = (query) => {
-    console.log("Realizando búsqueda con la consulta:", query);
     setSearchQuery(query);
+    setCurrentPage(1);
   };
 
   const handleFilterChange = (newFilters) => {
     setFilterOptions(newFilters);
+    setCurrentPage(1);
   };
 
   const handleReset = () => {
@@ -64,9 +71,16 @@ function Home() {
       species: "",
       gender: "",
     });
+
+    setCurrentPage(1);
   };
 
   const characters = data && data.characters ? data.characters.results : [];
+  const totalPages = data && data.characters ? data.characters.info.pages : 0;
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   return (
     <div>
@@ -84,7 +98,12 @@ function Home() {
         <ResetButton onReset={handleReset} />
       </div>
 
-      {loading && <p>Cargando...</p>}
+      {loading && (
+        <p className="loading-message">
+          <span className="spinner"></span>
+          Loading...
+        </p>
+      )}
 
       {!loading && error && <p>Error: {error.message}</p>}
 
@@ -96,9 +115,14 @@ function Home() {
 
       {!loading && !error && data.characters.results.length == 0 && (
         <div>
-          <span>No results</span>
+          <span className="no-results-message">No results</span>
         </div>
       )}
+      <Pagination
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        actualPage={currentPage}
+      />
     </div>
   );
 }
