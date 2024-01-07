@@ -1,0 +1,24 @@
+.card {
+  background-color: #2c8c34;
+  border: 2px solid #1aa9c5;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s;
+  margin: 10px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.card p {
+  color: #c5d554;
+  text-align: center;
+  margin: 10px 0;
+}
