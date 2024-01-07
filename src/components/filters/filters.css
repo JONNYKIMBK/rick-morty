@@ -1,0 +1,38 @@
+.filters-container {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.filter-select {
+  padding: 10px;
+  border: 1px solid #c5d554;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #17523d;
+  color: white;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filter-select:hover {
+  background-color: #1aa9c5;
+  color: #fff;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #1aa9c5;
+}
+
+@media (max-width: 600px) {
+  .filters-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-select {
+    width: auto;
+  }
+}

@@ -6,6 +6,7 @@
   overflow: hidden;
   transition: transform 0.3s;
   margin: 10px;
+  width: 250px;
 }
 
 .card:hover {
@@ -14,11 +15,15 @@
 
 .card img {
   width: 100%;
-  height: auto;
+  height: 250px;
+  object-fit: cover;
 }
 
 .card p {
   color: #c5d554;
   text-align: center;
   margin: 10px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

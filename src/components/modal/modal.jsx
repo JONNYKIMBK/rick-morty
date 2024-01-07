@@ -14,10 +14,7 @@ function Modal({ character, onClose }) {
           </div>
 
           <div className="modal-right">
-            <p>
-              <span className="title">Name: </span>
-              {name}
-            </p>
+            <h2>{name}</h2>
             <p>
               <span className="title">Status: </span>
               {status}

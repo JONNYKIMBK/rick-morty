@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./filters.css";
 
 function Filters({ onFilterChange, filterOptions }) {
   const [filters, setFilters] = useState({
@@ -8,7 +9,6 @@ function Filters({ onFilterChange, filterOptions }) {
   });
 
   useEffect(() => {
-    // Actualizar los filtros locales cuando cambian los filtros externos
     setFilters(filterOptions);
   }, [filterOptions]);
 
@@ -19,10 +19,11 @@ function Filters({ onFilterChange, filterOptions }) {
   };
 
   return (
-    <div>
+    <div className="filters-container">
       <select
         value={filters.status}
         onChange={(e) => handleFilterChange("status", e.target.value)}
+        className="filter-select"
       >
         <option value="">Status...</option>
         <option value="Alive">Alive</option>
@@ -33,6 +34,7 @@ function Filters({ onFilterChange, filterOptions }) {
       <select
         value={filters.species}
         onChange={(e) => handleFilterChange("species", e.target.value)}
+        className="filter-select"
       >
         <option value="">Specie...</option>
         <option value="Human">Human</option>
@@ -45,6 +47,7 @@ function Filters({ onFilterChange, filterOptions }) {
       <select
         value={filters.gender}
         onChange={(e) => handleFilterChange("gender", e.target.value)}
+        className="filter-select"
       >
         <option value="">Gender...</option>
         <option value="Male">Male</option>
