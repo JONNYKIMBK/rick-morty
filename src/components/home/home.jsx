@@ -5,6 +5,7 @@ import Cards from "../cards/cards";
 import ResetButton from "../resetButton/resetButton";
 import Filters from "../filters/filters";
 import Pagination from "../pagination/pagination";
+import SocialButtons from "../socialButtons/socialButtons";
 import "./home.css";
 
 const GET_CHARACTERS = gql`
@@ -84,6 +85,8 @@ function Home() {
 
   return (
     <div>
+      <SocialButtons />
+
       <Searchbar onSearch={handleSearch} />
       <div className="searchResult">
         {searchQuery ? (
